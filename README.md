@@ -20,6 +20,8 @@ vault server -dev
 
 Input some secrets:
 
+As an example...
+
 ```bash
 vault kv put secret/app-secrets temp_pwd=ik1ahTho$a0eim8a api_key=a4db08b7-5729-4ba9-8c08-f2df493465a1 generic_secret=s3cr3t
 ```
@@ -52,6 +54,8 @@ curl -H "X-VAULT-TOKEN: $VAULT_TOKEN" $VAULT_ADDR/v1/secret/data/app-secrets
 ```
 
 And it returns the following HTTP response body:
+
+as an example:
 
 ```json
 {
@@ -98,7 +102,7 @@ e.g.
 ```yaml
 vault:
   addr: http://127.0.0.1:8200
-  token: s.lYMALDVX0IO5UlQIudKiGnhr
+  token: your-token
 ```
 
 __RestTemplate Configuration__
@@ -157,7 +161,7 @@ As can be seen in the following code:
 
 ```java
   if (demoMode.equals(DemoMode.ENV_VAR.getDemoModeConf())){
-    headers.set("X-VAULT-TOKEN", System.getProperty("VAULT_TOKEN"));
+    headers.set("X-VAULT-TOKEN", System.getenv("VAULT_TOKEN"));
   } else if (demoMode.equals(DemoMode.APP_CONFIG.getDemoModeConf())){
     headers.set("X-VAULT-TOKEN", vaultToken);
   }
