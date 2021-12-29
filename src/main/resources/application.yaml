@@ -13,6 +13,12 @@ spring:
     console.settings.trace: false 
     console.settings.web-allow-others: false
 
-  vault:
-    addr: http://127.0.0.1:8200
-    token: my-secret-token
+vault:
+  addr: http://127.0.0.1:8200
+  token: your-token
+
+# can be one of two options: [ENV-VAR, APP-CONFIG]
+# ENV-VAR - configuration via Environment Variables
+# APP-CONFIG - configuration via Application Config (application.yaml)
+demo:
+  mode: ENV-VAR

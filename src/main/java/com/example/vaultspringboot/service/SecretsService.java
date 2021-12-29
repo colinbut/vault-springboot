@@ -1,5 +1,6 @@
 package com.example.vaultspringboot.service;
 
+import com.example.vaultspringboot.constants.DemoMode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +24,10 @@ public class SecretsService {
 
     private static final String SECRET_URL_PATH = "/v1/secret/data/app-secrets";
 
-    @Value("${vault.token}")
+    @Value("${demo.mode}")
+    private String demoMode;
+
+    @Value("${vault.token:root}")
     private String vaultToken;
     
     @Autowired
@@ -32,7 +36,15 @@ public class SecretsService {
     public String getSecret(String secretKey) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-VAULT-TOKEN", vaultToken);
+
+        if (demoMode.equals(DemoMode.ENV_VAR.getDemoModeConf())){
+            LOGGER.info("Retrieving Environment Variable - VAULT_TOKEN");
+            headers.set("X-VAULT-TOKEN", System.getenv("VAULT_TOKEN"));
+        } else if (demoMode.equals(DemoMode.APP_CONFIG.getDemoModeConf())){
+            LOGGER.info("Retrieving Application Config - VAULT_TOKEN");
+            headers.set("X-VAULT-TOKEN", vaultToken);
+        }
+        
         HttpEntity<?> request = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(SECRET_URL_PATH, HttpMethod.GET, request, String.class);

@@ -15,6 +15,7 @@ public class SecretsDemoController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SecretsDemoController.class);
 
     private static final String HTML_SPACE = "<br />";
+    
     @Autowired
     private SecretsService secretsService;
 
